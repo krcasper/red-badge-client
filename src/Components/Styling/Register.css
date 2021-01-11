@@ -1,0 +1,13 @@
+#register {
+    position: absolute;
+    background-color: #CCC;
+    width: 400px;
+    left: calc(50% - 200px);
+    top: 200px;
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+}
+
