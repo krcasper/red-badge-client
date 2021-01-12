@@ -8,6 +8,7 @@ import '../Styling/Register.css';
 interface RegisterProps {
     show: boolean;
     onClose: () => void;
+    handleRegister: (email: string, username: string, password: string) => void;
 }
 
 interface RegisterState {
@@ -27,11 +28,7 @@ export class RegisterComponent extends React.Component<RegisterProps, RegisterSt
         };
     }
 
-    async handleRegister() {
-       const sessionToken = await Register(this.state.email, this.state.username, this.state.password);
-       console.log(sessionToken);
-       this.props.onClose();
-    }
+    
 
     handleChangeEmail(e: ChangeEvent<HTMLInputElement>){
         this.setState({
@@ -49,6 +46,10 @@ export class RegisterComponent extends React.Component<RegisterProps, RegisterSt
         this.setState({
             password: e.target.value,
         })
+    }
+
+    handleRegister() {
+        this.props.handleRegister(this.state.email, this.state.username, this.state.password);
     }
 
     render() {

@@ -8,6 +8,7 @@ import { Login } from '../../Services/LoginService';
 interface LoginProps {
     show: boolean;
     onClose: () => void;
+    handleLogin: (username: string, password: string) => void;
 }
 
 interface LoginState {
@@ -25,11 +26,7 @@ export class LoginComponent extends React.Component<LoginProps, LoginState> {
         };
     }
 
-    async handleLogin() {
-       const sessionToken = await Login(this.state.username, this.state.password);
-       console.log(sessionToken);
-       this.props.onClose();
-    }
+    
 
     handleChangeUsername(e: ChangeEvent<HTMLInputElement>){
         this.setState({
@@ -43,9 +40,12 @@ export class LoginComponent extends React.Component<LoginProps, LoginState> {
         })
     }
 
+
+    handleLogin() {
+        this.props.handleLogin(this.state.username, this.state.password);
+    }
+
     render() {
-
-
         return (
             <div>
                 <Modal
