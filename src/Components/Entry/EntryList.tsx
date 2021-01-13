@@ -7,6 +7,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 
 
 interface EntryListProps {
@@ -20,8 +22,14 @@ interface EntryListState {
     loading?: boolean;
 }
 
-export class EntryList extends React.Component<EntryListProps, EntryListState> {
-    constructor(props: EntryListProps){
+interface RouteParams {
+  tripId?: string;
+}
+
+type EntryListAllProps = EntryListProps & RouteComponentProps<RouteParams>;
+
+class EntryList extends React.Component<EntryListAllProps, EntryListState> {
+    constructor(props: EntryListAllProps){
         super(props);
 
         this.state = {};
@@ -45,7 +53,10 @@ export class EntryList extends React.Component<EntryListProps, EntryListState> {
     async getEntries(){
         try{
             this.setState({ loading: true });
-            const entries = await getEntries();
+            if (!this.props.match.params.tripId) {
+              throw new Error('No Trip ID');
+            }
+            const entries = await getEntries(parseInt(this.props.match.params.tripId));
 
             this.setState({ entries, loading: false });
             console.log(entries);
@@ -56,7 +67,8 @@ export class EntryList extends React.Component<EntryListProps, EntryListState> {
     }
     render() {
         return(
-        
+        <div>
+          <Link to='/'>Back</Link>
             <TableContainer>
       <Table>
         <TableHead>
@@ -77,7 +89,10 @@ export class EntryList extends React.Component<EntryListProps, EntryListState> {
         </TableBody>
       </Table>
     </TableContainer>
+  </div>
         
         );
     }
 }
+
+export default withRouter(EntryList);

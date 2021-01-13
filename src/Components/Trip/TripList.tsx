@@ -7,6 +7,19 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { Link } from 'react-router-dom';
+import TripCreateComponent from './TripCreate';
+import { styled } from '@material-ui/core/styles';
+
+const MyTable = styled(TableContainer)({
+  alignTable: 'center',
+  width: '75%',
+  marginTop: '0px',
+  marginBottom: '0px',
+  marginLeft: 'auto',
+  marginRight: 'auto',
+  border: '2px solid black',
+});
 
 
 interface TripListProps {
@@ -24,16 +37,20 @@ export class TripList extends React.Component<TripListProps, TripListState> {
         super(props);
 
         this.state = {};
-        this.getTrips();
-        // pass into a componentDidMount instead of constructor
         
     }
 
     componentDidUpdate() {
-        if (this.isLoggedIn() && !this.state.trips && !this.state.loading) {
-            this.getTrips();
-        }
+      if (this.isLoggedIn() && !this.state.trips && !this.state.loading) {
+        this.getTrips();
+    }
 
+    }
+
+    componentDidMount() {
+      if (this.isLoggedIn() && !this.state.trips && !this.state.loading) {
+        this.getTrips();
+      }
     }
 
     isLoggedIn() {
@@ -53,30 +70,37 @@ export class TripList extends React.Component<TripListProps, TripListState> {
         }
 
     }
+
+    onCreate() {
+      this.getTrips();
+    }
     render() {
         return(
-        
-            <TableContainer>
+        <div>
+            <MyTable>
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Trip Name</TableCell>
-            <TableCell align="right">Trip Description</TableCell>
-            <TableCell align="right">Trip Members</TableCell>
-          </TableRow>
+            <TableCell><h4>Trip Name</h4></TableCell>
+            <TableCell align="right"><h4>Trip Description</h4></TableCell>
+            <TableCell align="right"><h4>Trip Members</h4></TableCell>
+            </TableRow>
         </TableHead>
         <TableBody>
         {this.state.trips && this.state.trips.map((trip) => (
+          
             <TableRow key={trip.id}>
-              <TableCell>{trip.tripName}</TableCell>
+              <TableCell><Link to={`/${trip.id}`}>{trip.tripName}</Link></TableCell>
               <TableCell align="right">{trip.tripDescription}</TableCell>
               <TableCell align="right">{trip.tripMembers}</TableCell>
             </TableRow>
+            
           ))}
         </TableBody>
       </Table>
-    </TableContainer>
-        
+    </MyTable>
+              {this.isLoggedIn() && <TripCreateComponent onCreate={this.onCreate.bind(this)} sessionToken={this.props.sessionToken}></TripCreateComponent>}
+            </div>
         );
     }
 }

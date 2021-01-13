@@ -4,10 +4,16 @@ import {RegisterComponent} from "./Components/Auth/Register"
 import Button from '@material-ui/core/Button';
 import './App.css';
 import { TripList } from './Components/Trip/TripList';
-import { EntryList } from './Components/Entry/EntryList'
+import EntryList from './Components/Entry/EntryList'
 import { Logout } from './Components/Auth/Logout';
 import { Login } from './Services/LoginService';
 import { Register } from './Services/RegisterService';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
+import './App.css';
 
 interface AppProps {
 
@@ -53,6 +59,7 @@ class App extends React.Component<AppProps, AppState> {
       showRegister: true,
     });
   }
+
 
   isNotLoggedIn() {
     return this.state.sessionToken === null;
@@ -100,13 +107,29 @@ class App extends React.Component<AppProps, AppState> {
       handleRegister={this.handleRegister.bind(this)}
       show={this.state.showRegister}
       onClose={this.closeModals.bind(this)}  />
+      
       {this.isNotLoggedIn() && <Button variant="contained" onClick={this.handleOpenRegister.bind(this)}>Register</Button>}
 
-
+      
       <Logout onLogout={this.logout.bind(this)}></Logout>
 
-      {this.isLoggedIn() && <TripList sessionToken={this.state.sessionToken}></TripList>}
-      {this.isLoggedIn() && <EntryList sessionToken={this.state.sessionToken}></EntryList>}
+
+      
+
+
+      <Router>
+      <Switch>
+        <Route path='/' exact>      
+          {this.isLoggedIn() && <TripList sessionToken={this.state.sessionToken}></TripList>}
+        </Route>
+
+        <Route path='/:tripId'>
+          {this.isLoggedIn() && <EntryList sessionToken={this.state.sessionToken}></EntryList>}
+        </Route>
+      </Switch>
+     </Router>
+
+
       </div>
     );
   }

@@ -2,7 +2,7 @@ import { Button } from "@material-ui/core";
 import React from "react";
 
 interface LogoutProps {
-    onLogout: () => void
+    onLogout: () => void;
 }
 
 export class Logout extends React.Component<LogoutProps>{
