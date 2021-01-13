@@ -7,10 +7,21 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import EntryCreateComponent from './EntryCreate'
+import EntryUpsertComponent from './EntryUpsert'
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Button } from '@material-ui/core';
+import { styled } from '@material-ui/core/styles';
+
+const MyTable = styled(TableContainer)({
+  alignTable: 'center',
+  width: '75%',
+  marginTop: '0px',
+  marginBottom: '0px',
+  marginLeft: 'auto',
+  marginRight: 'auto',
+  border: '2px solid black',
+});
 
 
 interface EntryListProps {
@@ -73,7 +84,7 @@ class EntryList extends React.Component<EntryListAllProps, EntryListState> {
       return parseInt(this.props.match.params.tripId as string);
     }
 
-    onCreate() {
+    onUpsert() {
       this.getEntries();
     }
 
@@ -83,11 +94,29 @@ class EntryList extends React.Component<EntryListAllProps, EntryListState> {
     }
 
 
+
+    displayEntry(entry: Entry) {
+      return( 
+      <React.Fragment>
+      <TableRow key={entry.id}>
+      <TableCell>{entry.entryDate}</TableCell>
+      <TableCell align="right">{entry.entryName}</TableCell>
+      <TableCell align="right">{entry.entryDescription}</TableCell>
+      <TableCell>    <EntryUpsertComponent existingEntry={entry} onUpsert={this.onUpsert.bind(this)} sessionToken={this.props.sessionToken} tripId={this.getTripId()}></EntryUpsertComponent></TableCell>
+
+      <TableCell><Button onClick={() => this.deleteEntry(entry.id)}>Delete</Button></TableCell>
+    </TableRow>
+    </React.Fragment>
+      );
+    }
+
+
+
     render() {
         return(
         <div>
           <Link to='/'>Back</Link>
-            <TableContainer>
+            <MyTable>
       <Table>
         <TableHead>
           <TableRow>
@@ -95,23 +124,21 @@ class EntryList extends React.Component<EntryListAllProps, EntryListState> {
             <TableCell align="left">Entry Date</TableCell>
             <TableCell align="left">Entry Name</TableCell>
             <TableCell>Entry Description</TableCell>
-            <TableCell>Actions</TableCell>
+            <TableCell>Edit</TableCell>
+            <TableCell>Delete</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-        {this.state.entries && this.state.entries.map((entry) => (
-            <TableRow key={entry.id}>
-              <TableCell align="left">{entry.entryDate}</TableCell>
-              <TableCell align="left">{entry.entryName}</TableCell>
-              <TableCell>{entry.entryDescription}</TableCell>
-              <TableCell><Button onClick={() => this.deleteEntry(entry.id)}>Delete</Button></TableCell>
-            </TableRow>
-          ))}
+          
+
+
+        {this.state.entries && this.state.entries.map((entry) => 
+            this.displayEntry(entry))}
         </TableBody>
       </Table>
-    </TableContainer>
+    </MyTable>
   
-      {this.isLoggedIn() && <EntryCreateComponent tripId={this.getTripId()} onCreate={this.onCreate.bind(this)} sessionToken={this.props.sessionToken}></EntryCreateComponent>}
+      {this.isLoggedIn() && <EntryUpsertComponent tripId={this.getTripId()} onUpsert={this.onUpsert.bind(this)} sessionToken={this.props.sessionToken}></EntryUpsertComponent>}
         </div>
         );
     }

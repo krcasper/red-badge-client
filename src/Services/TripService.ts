@@ -66,3 +66,19 @@ export async function editTrip(tripName: string, tripDescription: string, tripMe
     }
     
 }
+
+export async function deleteTrip(tripId: number): Promise<void> {
+    const token = localStorage.getItem('token');
+    if (token === null) {
+        throw new Error('Not Authenticated');
+    }
+
+    await fetch(`${APIURL}/trip/${tripId}`, {
+        method: 'DELETE',
+        headers: new Headers( {
+            'Authorization': token,
+          })
+    });
+
+    return;
+}

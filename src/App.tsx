@@ -13,7 +13,7 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import './App.css';
+import './App.css'; 
 
 interface AppProps {
 
@@ -96,6 +96,12 @@ class App extends React.Component<AppProps, AppState> {
   render() {
     return (
       <div className="App">
+        <h1>The Wandering Goat</h1>
+        <h4>A travel planning and itinerary building web application</h4>
+        
+
+        <img src='https://images.pexels.com/photos/2832038/pexels-photo-2832038.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260'/>
+
         <LoginComponent
       handleLogin={this.handleLogin.bind(this)}
       show={this.state.showLogin}

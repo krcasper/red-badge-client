@@ -12,7 +12,9 @@ export async function Login(username: string, password: string) {
           }
     })
     .then((res) => res.json());
-
+    if (!response.error) {
+       
+    }
     localStorage.setItem('token', response.sessionToken);
 
     return response.sessionToken;

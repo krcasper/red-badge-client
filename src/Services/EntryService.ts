@@ -36,7 +36,7 @@ export async function deleteEntry(entryId: number): Promise<void> {
 
 
 
-export async function createEntry(entryName: string, entryDate: string, entryDescription: string, tripId: number) : Promise<void>{
+export async function createEntry(entryDate: string, entryName: string, entryDescription: string, tripId: number) : Promise<void>{
     const token = localStorage.getItem('token');
     if (token === null) {
         throw new Error('Not Authenticated');
@@ -45,9 +45,34 @@ export async function createEntry(entryName: string, entryDate: string, entryDes
     await fetch(`${APIURL}/trip/${tripId}/new-entry`, {
         method: 'POST',
         body: JSON.stringify({
-            entryName,
             entryDate,
+            entryName,
             entryDescription,
+        }),
+        headers: new Headers( {
+            'Authorization': token,
+                "Content-Type": "application/json",
+          })
+    });
+    return;
+    
+    }
+    
+}
+
+export async function editEntry(entryDate: string, entryName: string, entryDescription: string, entryId: number) : Promise<void>{
+    const token = localStorage.getItem('token');
+    if (token === null) {
+        throw new Error('Not Authenticated');
+    } else {
+
+    await fetch(`${APIURL}/entry/update/${entryId}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            entryDate,
+            entryName,
+            entryDescription,
+            id: entryId,
         }),
         headers: new Headers( {
             'Authorization': token,

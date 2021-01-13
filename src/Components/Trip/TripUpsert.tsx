@@ -4,6 +4,7 @@ import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { Trip } from '../../Types/Trip';
+import '../Styling/Login.css'
 
 
 
@@ -97,12 +98,16 @@ export class TripUpsertComponent extends React.Component<TripUpsertProps, TripUp
             <Modal
                     open={this.state.show}
                     onClose={this.onClose.bind(this)}  >
-                    <div id='newTrip'>
+                    <div id='login'>
                         <h1>{this.props.existingTrip ? 'Edit Trip' : 'New Trip'}</h1>
                     <form>
                     <TextField value={this.state.tripName} label="tripName" variant="outlined" onChange={this.handleChangeTripName.bind(this)}/>
+                    <br />
                     <TextField value={this.state.tripDescription} label="tripDescription" variant="outlined" onChange={this.handleChangeTripDescription.bind(this)}/>
+                    <br />
                     <TextField value={this.state.tripMembers} label="tripMembers" variant="outlined" onChange={this.handleChangeTripMembers.bind(this)}/>
+                    <br />
+                    <br />
                     <Button id="submit" variant="contained" onClick={this.handleSubmit.bind(this)}>Submit</Button>
 
 

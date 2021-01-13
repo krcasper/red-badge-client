@@ -1,5 +1,5 @@
 import React from 'react';
-import { getTrips } from '../../Services/TripService';
+import { getTrips, deleteTrip } from '../../Services/TripService';
 import { Trip } from '../../Types/Trip';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -10,6 +10,7 @@ import TableRow from '@material-ui/core/TableRow';
 import { Link } from 'react-router-dom';
 import TripUpsertComponent from './TripUpsert';
 import { styled } from '@material-ui/core/styles';
+import { Button } from '@material-ui/core';
 
 const MyTable = styled(TableContainer)({
   alignTable: 'center',
@@ -66,12 +67,17 @@ export class TripList extends React.Component<TripListProps, TripListState> {
             this.setState({ trips, loading: false });
             console.log(trips);
         } catch (e){
-            console.log(e)
         }
 
     }
 
     onUpsert() {
+      this.getTrips();
+    }
+
+
+    async deleteTrip(tripId: number) {
+      await deleteTrip(tripId);
       this.getTrips();
     }
 
@@ -83,6 +89,8 @@ export class TripList extends React.Component<TripListProps, TripListState> {
       <TableCell align="right">{trip.tripDescription}</TableCell>
       <TableCell align="right">{trip.tripMembers}</TableCell>
       <TableCell>    <TripUpsertComponent existingTrip={trip} onUpsert={this.onUpsert.bind(this)} sessionToken={this.props.sessionToken}></TripUpsertComponent></TableCell>
+
+      <TableCell><Button onClick={() => this.deleteTrip(trip.id)}>Delete</Button></TableCell>
     </TableRow>
     </React.Fragment>
       );
@@ -99,9 +107,14 @@ export class TripList extends React.Component<TripListProps, TripListState> {
             <TableCell align="right"><h4>Trip Description</h4></TableCell>
             <TableCell align="right"><h4>Trip Members</h4></TableCell>
             <TableCell><h4>Actions</h4></TableCell>
+            <TableCell><h4>Actions</h4></TableCell>
             </TableRow>
         </TableHead>
         <TableBody>
+
+
+
+
         {this.state.trips && this.state.trips.map((trip) => this.displayTrip(trip))}
         </TableBody>
       </Table>
