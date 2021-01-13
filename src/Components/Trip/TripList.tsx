@@ -8,7 +8,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Link } from 'react-router-dom';
-import TripCreateComponent from './TripCreate';
+import TripUpsertComponent from './TripUpsert';
 import { styled } from '@material-ui/core/styles';
 
 const MyTable = styled(TableContainer)({
@@ -71,9 +71,23 @@ export class TripList extends React.Component<TripListProps, TripListState> {
 
     }
 
-    onCreate() {
+    onUpsert() {
       this.getTrips();
     }
+
+    displayTrip(trip: Trip) {
+      return( 
+      <React.Fragment>
+      <TableRow key={trip.id}>
+      <TableCell><Link to={`/${trip.id}`}>{trip.tripName}</Link></TableCell>
+      <TableCell align="right">{trip.tripDescription}</TableCell>
+      <TableCell align="right">{trip.tripMembers}</TableCell>
+      <TableCell>    <TripUpsertComponent existingTrip={trip} onUpsert={this.onUpsert.bind(this)} sessionToken={this.props.sessionToken}></TripUpsertComponent></TableCell>
+    </TableRow>
+    </React.Fragment>
+      );
+    }
+
     render() {
         return(
         <div>
@@ -84,22 +98,15 @@ export class TripList extends React.Component<TripListProps, TripListState> {
             <TableCell><h4>Trip Name</h4></TableCell>
             <TableCell align="right"><h4>Trip Description</h4></TableCell>
             <TableCell align="right"><h4>Trip Members</h4></TableCell>
+            <TableCell><h4>Actions</h4></TableCell>
             </TableRow>
         </TableHead>
         <TableBody>
-        {this.state.trips && this.state.trips.map((trip) => (
-          
-            <TableRow key={trip.id}>
-              <TableCell><Link to={`/${trip.id}`}>{trip.tripName}</Link></TableCell>
-              <TableCell align="right">{trip.tripDescription}</TableCell>
-              <TableCell align="right">{trip.tripMembers}</TableCell>
-            </TableRow>
-            
-          ))}
+        {this.state.trips && this.state.trips.map((trip) => this.displayTrip(trip))}
         </TableBody>
       </Table>
     </MyTable>
-              {this.isLoggedIn() && <TripCreateComponent onCreate={this.onCreate.bind(this)} sessionToken={this.props.sessionToken}></TripCreateComponent>}
+              {this.isLoggedIn() && <TripUpsertComponent onUpsert={this.onUpsert.bind(this)} sessionToken={this.props.sessionToken}></TripUpsertComponent>}
             </div>
         );
     }

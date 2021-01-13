@@ -1,6 +1,6 @@
 export interface Entry {
     entryName: string,
-    entryDate: Date,
+    entryDate: string,
     entryDescription: string,
     tripId: number,
     id: number,

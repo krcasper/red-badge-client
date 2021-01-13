@@ -1,5 +1,5 @@
 import React from 'react';
-import { getEntries } from '../../Services/EntryService';
+import { deleteEntry, getEntries } from '../../Services/EntryService';
 import { Entry } from '../../Types/Entry';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,8 +7,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import EntryCreateComponent from './EntryCreate'
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
+import { Button } from '@material-ui/core';
 
 
 interface EntryListProps {
@@ -33,8 +35,6 @@ class EntryList extends React.Component<EntryListAllProps, EntryListState> {
         super(props);
 
         this.state = {};
-        this.getEntries();
-        // pass into a componentDidMount instead of constructor
         
     }
 
@@ -45,6 +45,12 @@ class EntryList extends React.Component<EntryListAllProps, EntryListState> {
 
     }
 
+    componentDidMount() {
+      if (this.isLoggedIn() && !this.state.entries && !this.state.loading) {
+        this.getEntries();
+      }
+    }
+
     isLoggedIn() {
         return localStorage.getItem('token') !== null;
       }
@@ -53,10 +59,7 @@ class EntryList extends React.Component<EntryListAllProps, EntryListState> {
     async getEntries(){
         try{
             this.setState({ loading: true });
-            if (!this.props.match.params.tripId) {
-              throw new Error('No Trip ID');
-            }
-            const entries = await getEntries(parseInt(this.props.match.params.tripId));
+            const entries = await getEntries(this.getTripId())
 
             this.setState({ entries, loading: false });
             console.log(entries);
@@ -65,6 +68,21 @@ class EntryList extends React.Component<EntryListAllProps, EntryListState> {
         }
 
     }
+
+    getTripId(){
+      return parseInt(this.props.match.params.tripId as string);
+    }
+
+    onCreate() {
+      this.getEntries();
+    }
+
+    async deleteEntry(entryId: number) {
+      await deleteEntry(entryId);
+      this.getEntries();
+    }
+
+
     render() {
         return(
         <div>
@@ -73,24 +91,28 @@ class EntryList extends React.Component<EntryListAllProps, EntryListState> {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Entry Name</TableCell>
-            <TableCell align="right">Entry Date</TableCell>
-            <TableCell align="right">Entry Description</TableCell>
+            
+            <TableCell align="left">Entry Date</TableCell>
+            <TableCell align="left">Entry Name</TableCell>
+            <TableCell>Entry Description</TableCell>
+            <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
         {this.state.entries && this.state.entries.map((entry) => (
             <TableRow key={entry.id}>
-              <TableCell>{entry.entryName}</TableCell>
-              <TableCell align="right">{entry.entryDate}</TableCell>
-              <TableCell align="right">{entry.entryDescription}</TableCell>
+              <TableCell align="left">{entry.entryDate}</TableCell>
+              <TableCell align="left">{entry.entryName}</TableCell>
+              <TableCell>{entry.entryDescription}</TableCell>
+              <TableCell><Button onClick={() => this.deleteEntry(entry.id)}>Delete</Button></TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
-  </div>
-        
+  
+      {this.isLoggedIn() && <EntryCreateComponent tripId={this.getTripId()} onCreate={this.onCreate.bind(this)} sessionToken={this.props.sessionToken}></EntryCreateComponent>}
+        </div>
         );
     }
 }

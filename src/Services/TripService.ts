@@ -17,3 +17,52 @@ export async function getTrips(): Promise<Trip[]> {
 
     return response as Trip[];
 }
+
+export async function createTrip(tripName: string, tripDescription: string, tripMembers: string) : Promise<void>{
+    const token = localStorage.getItem('token');
+    if (token === null) {
+        throw new Error('Not Authenticated');
+    } else {
+
+    await fetch(`${APIURL}/trip/create`, {
+        method: 'POST',
+        body: JSON.stringify({
+            tripName,
+            tripDescription,
+            tripMembers,
+        }),
+        headers: new Headers( {
+            'Authorization': token,
+                "Content-Type": "application/json",
+          })
+    });
+    return;
+    
+    }
+    
+}
+
+export async function editTrip(tripName: string, tripDescription: string, tripMembers: string, tripId: number) : Promise<void>{
+    const token = localStorage.getItem('token');
+    if (token === null) {
+        throw new Error('Not Authenticated');
+    } else {
+
+    await fetch(`${APIURL}/trip/update/${tripId}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            tripName,
+            tripDescription,
+            tripMembers,
+            id: tripId,
+        }),
+        headers: new Headers( {
+            'Authorization': token,
+                "Content-Type": "application/json",
+          })
+    });
+    return;
+    
+    }
+    
+}
