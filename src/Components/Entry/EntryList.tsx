@@ -100,8 +100,8 @@ class EntryList extends React.Component<EntryListAllProps, EntryListState> {
       <React.Fragment>
       <TableRow key={entry.id}>
       <TableCell>{entry.entryDate}</TableCell>
-      <TableCell align="right">{entry.entryName}</TableCell>
-      <TableCell align="right">{entry.entryDescription}</TableCell>
+      <TableCell>{entry.entryName}</TableCell>
+      <TableCell>{entry.entryDescription}</TableCell>
       <TableCell>    <EntryUpsertComponent existingEntry={entry} onUpsert={this.onUpsert.bind(this)} sessionToken={this.props.sessionToken} tripId={this.getTripId()}></EntryUpsertComponent></TableCell>
 
       <TableCell><Button onClick={() => this.deleteEntry(entry.id)}>Delete</Button></TableCell>
@@ -121,11 +121,10 @@ class EntryList extends React.Component<EntryListAllProps, EntryListState> {
         <TableHead>
           <TableRow>
             
-            <TableCell align="left">Entry Date</TableCell>
-            <TableCell align="left">Entry Name</TableCell>
+            <TableCell>Entry Date</TableCell>
+            <TableCell>Entry Name</TableCell>
             <TableCell>Entry Description</TableCell>
-            <TableCell>Edit</TableCell>
-            <TableCell>Delete</TableCell>
+            <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

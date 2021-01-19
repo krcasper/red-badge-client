@@ -18,7 +18,7 @@ import {
   RouteComponentProps
 } from "react-router-dom";
 import './App.css'; 
-import travelduck from './assets/travelduck.jpg';
+import goat from './assets/goat.png';
 import { User } from './Types/User';
 import { getMyUser } from './Services/UserService';
 import { AdminPortalButton } from './Components/Auth/AdminPortalButton';
@@ -63,9 +63,9 @@ class App extends React.Component<AppAllProps, AppState> {
         <NavBar sessionToken={this.state.sessionToken} setSessionToken={this.setSessionToken.bind(this)} />
         
         
-        <h1>welcome to wander-duck</h1>
+        <h1>welcome to wandergoat</h1>
         
-        <img src={travelduck} alt={"travelduck"} />
+        <img src={goat} alt={"goat"} />
         <h4>A travel planning and itinerary building web application</h4>
         
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
+import { styled } from '@material-ui/core/styles';
+import AppBar, { AppBarProps } from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -14,20 +14,12 @@ import { Register } from '../../Services/RegisterService';
 import { getMyUser } from '../../Services/UserService';
 import { LoginComponent } from '../Auth/Login';
 import { Link } from 'react-router-dom';
+import { Omit } from '@material-ui/types';
 
-// const useStyles = makeStyles((theme: Theme) =>
-//   createStyles({
-//     root: {
-//       flexGrow: 1,
-//     },
-//     menuButton: {
-//       marginRight: theme.spacing(2),
-//     },
-//     title: {
-//       flexGrow: 1,
-//     },
-//   }),
-// );
+const MyAppBar = styled(AppBar)({
+    background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+    justifyItems: 'right',
+});
 
 interface NavBarProps {
     sessionToken: string | null;
@@ -133,29 +125,37 @@ export default class NavBar extends React.Component<NavBarProps, NavBarState> {
 
   return (
     <div>
-      <AppBar position="static">
-        <Toolbar>
+      <MyAppBar position="static">
+          <Toolbar>
+        
+
+        <IconButton>
+            <MenuIcon />
+          </IconButton>
+        
         <LoginComponent
       handleLogin={this.handleLogin.bind(this)}
       show={this.state.showLogin}
       onClose={this.closeModals.bind(this)}  />
       
-      {this.isNotLoggedIn() && <Button variant="contained" onClick={this.handleOpenLogin.bind(this)}>Login</Button>}
+      {this.isNotLoggedIn() && <Button onClick={this.handleOpenLogin.bind(this)}>Login</Button>}
 
       <RegisterComponent
       handleRegister={this.handleRegister.bind(this)}
       show={this.state.showRegister}
       onClose={this.closeModals.bind(this)}  />
       
-      {this.isNotLoggedIn() && <Button variant="contained" onClick={this.handleOpenRegister.bind(this)}>Register</Button>}
+      {this.isNotLoggedIn() && <Button onClick={this.handleOpenRegister.bind(this)}>Register</Button>}
 
       
       <Logout onLogout={this.logout.bind(this)}></Logout>
-      {this.isAdmin() &&  <Link to="/admin">
+      {this.isAdmin() &&  <Link to="/admin"><Button>
         Admin Portal
+        </Button>
       </Link>}
-        </Toolbar>
-      </AppBar>
+      </Toolbar>
+        
+      </MyAppBar>
     </div>
   );
 }
