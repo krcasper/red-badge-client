@@ -1,5 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=The+Girl+Next+Door&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
+
 .App {
   text-align: center;
+  
+}
+h4 {
+  font-family: 'Roboto', sans-serif;
+}
+#welcome {
+  font-family: 'The Girl Next Door', cursive;
+  font-size: 1em;
+  font-weight: lighter;
+}
+
+h1 {
+  font-family: 'The Girl Next Door', cursive;
+  font-size: 5em;
+  font-weight: lighter;
+  margin: 10px;
+  padding: 10px;
+}
+
+body {
+  background-color: lightgray;
+  background-image: url("assets/white-texture.jpg");
+  background-size: cover;
 }
 
 
@@ -19,7 +45,7 @@
 }
 
 img {
-  width: 20%;
+  width: 30%;
   height: auto;
 }
 

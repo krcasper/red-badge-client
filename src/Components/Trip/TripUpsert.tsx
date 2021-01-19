@@ -17,7 +17,7 @@ type TripUpsertProps = {
 interface TripUpsertState {
     tripName: string;
     tripDescription: string;
-    tripMembers: string;
+    tripDates: string;
     show: boolean;
 }
 
@@ -28,14 +28,14 @@ export class TripUpsertComponent extends React.Component<TripUpsertProps, TripUp
             this.state={
                 tripName: props.existingTrip.tripName,
                 tripDescription: props.existingTrip.tripDescription,
-                tripMembers: props.existingTrip.tripMembers,
+                tripDates: props.existingTrip.tripDates,
                 show: false,
             };
         } else {
             this.state={
                 tripName: '',
                 tripDescription: '',
-                tripMembers: '',
+                tripDates: '',
                 show: false,
             };
         }
@@ -45,9 +45,9 @@ export class TripUpsertComponent extends React.Component<TripUpsertProps, TripUp
 
     handleSubmit = async (e: React.SyntheticEvent) => {
         if (this.props.existingTrip) {
-            await editTrip(this.state.tripName, this.state.tripDescription, this.state.tripMembers, this.props.existingTrip.id);
+            await editTrip(this.state.tripName, this.state.tripDescription, this.state.tripDates, this.props.existingTrip.id);
         } else {
-            await createTrip(this.state.tripName, this.state.tripDescription, this.state.tripMembers);
+            await createTrip(this.state.tripName, this.state.tripDescription, this.state.tripDates);
         }
         this.props.onUpsert();
         this.setState({ show: false });
@@ -68,9 +68,9 @@ export class TripUpsertComponent extends React.Component<TripUpsertProps, TripUp
         })
     }
 
-    handleChangeTripMembers(e: ChangeEvent<HTMLInputElement>){
+    handleChangeTripDates(e: ChangeEvent<HTMLInputElement>){
         this.setState({
-            tripMembers: e.target.value,
+            tripDates: e.target.value,
         })
     }
 
@@ -103,9 +103,9 @@ export class TripUpsertComponent extends React.Component<TripUpsertProps, TripUp
                     <form>
                     <TextField value={this.state.tripName} label="tripName" variant="outlined" onChange={this.handleChangeTripName.bind(this)}/>
                     <br />
-                    <TextField value={this.state.tripDescription} label="tripDescription" variant="outlined" onChange={this.handleChangeTripDescription.bind(this)}/>
+                    <TextField value={this.state.tripDates} label="tripDates" variant="outlined" onChange={this.handleChangeTripDates.bind(this)}/>
                     <br />
-                    <TextField value={this.state.tripMembers} label="tripMembers" variant="outlined" onChange={this.handleChangeTripMembers.bind(this)}/>
+                    <TextField value={this.state.tripDescription} label="tripDescription" variant="outlined" onChange={this.handleChangeTripDescription.bind(this)}/>
                     <br />
                     <br />
                     <Button id="submit" variant="contained" onClick={this.handleSubmit.bind(this)}>Submit</Button>

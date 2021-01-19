@@ -86,8 +86,8 @@ export class TripList extends React.Component<TripListProps, TripListState> {
       <React.Fragment>
       <TableRow key={trip.id}>
       <TableCell><Link to={`/${trip.id}`}>{trip.tripName}</Link></TableCell>
+      <TableCell align="right">{trip.tripDates}</TableCell>
       <TableCell align="right">{trip.tripDescription}</TableCell>
-      <TableCell align="right">{trip.tripMembers}</TableCell>
       <TableCell>    <TripUpsertComponent existingTrip={trip} onUpsert={this.onUpsert.bind(this)} sessionToken={this.props.sessionToken}></TripUpsertComponent></TableCell>
 
       <TableCell><Button onClick={() => this.deleteTrip(trip.id)}>Delete</Button></TableCell>
@@ -104,8 +104,8 @@ export class TripList extends React.Component<TripListProps, TripListState> {
         <TableHead>
           <TableRow>
             <TableCell><h4>Trip Name</h4></TableCell>
+            <TableCell align="right"><h4>Trip Dates</h4></TableCell>
             <TableCell align="right"><h4>Trip Description</h4></TableCell>
-            <TableCell align="right"><h4>Trip Members</h4></TableCell>
             <TableCell><h4>Actions</h4></TableCell>
             <TableCell><h4>Actions</h4></TableCell>
             </TableRow>

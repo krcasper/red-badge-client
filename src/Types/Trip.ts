@@ -1,7 +1,7 @@
 export interface Trip {
     tripName: string,
     tripDescription: string,
-    tripMembers: string,
+    tripDates: string,
     userId: number,
     id: number,
 }

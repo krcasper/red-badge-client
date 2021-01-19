@@ -18,7 +18,7 @@ export async function getTrips(): Promise<Trip[]> {
     return response as Trip[];
 }
 
-export async function createTrip(tripName: string, tripDescription: string, tripMembers: string) : Promise<void>{
+export async function createTrip(tripName: string, tripDescription: string, tripDates: string) : Promise<void>{
     const token = localStorage.getItem('token');
     if (token === null) {
         throw new Error('Not Authenticated');
@@ -28,8 +28,8 @@ export async function createTrip(tripName: string, tripDescription: string, trip
         method: 'POST',
         body: JSON.stringify({
             tripName,
-            tripDescription,
-            tripMembers,
+            tripDates,
+            tripDescription
         }),
         headers: new Headers( {
             'Authorization': token,
@@ -42,7 +42,7 @@ export async function createTrip(tripName: string, tripDescription: string, trip
     
 }
 
-export async function editTrip(tripName: string, tripDescription: string, tripMembers: string, tripId: number) : Promise<void>{
+export async function editTrip(tripName: string, tripDescription: string, tripDates: string, tripId: number) : Promise<void>{
     const token = localStorage.getItem('token');
     if (token === null) {
         throw new Error('Not Authenticated');
@@ -53,7 +53,7 @@ export async function editTrip(tripName: string, tripDescription: string, tripMe
         body: JSON.stringify({
             tripName,
             tripDescription,
-            tripMembers,
+            tripDates,
             id: tripId,
         }),
         headers: new Headers( {
